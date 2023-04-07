@@ -63,15 +63,17 @@
               Submit
             </button>
           </form>
-          <!-- Registration Form -->
-          <form v-show="tab === 'register'">
-            <!-- Name -->
+          <!-- Registration Form,它将帮助我们验证表单中的每个输入字段是否有效，表单组件将生成一个默认情况下将包装组件的标签。 -->
+          <vee-form v-show="tab === 'register'">
+            <!-- Name  字段组件负责验证单个输入，它会默认生成一个输入标签。-->
             <div class="mb-3">
               <label class="inline-block mb-2">Name</label>
-              <input type="text"
-                     class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                     placeholder="Enter Name" />
+              <vee-field type="text"
+                         name="name"
+                         class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
+                         placeholder="Enter Name" />
             </div>
+
             <!-- Email -->
             <div class="mb-3">
               <label class="inline-block mb-2">Email</label>
@@ -118,7 +120,7 @@
                     class="block w-full bg-purple-600 text-white py-1.5 px-3 rounded transition hover:bg-purple-700">
               Submit
             </button>
-          </form>
+          </vee-form>
         </div>
       </div>
     </div>
