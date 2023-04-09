@@ -1,9 +1,26 @@
-import {Form as VeeForm, Field as VeeField} from "vee-validate";
+import {
+  Form as VeeForm, Field as VeeField, defineRule, ErrorMessage,
+} from 'vee-validate';
+import {
+  required, min, max, alpha_spaces as alphaSpaces, email,
+  min_value as minVal, max_value as maxVal, confirmed, not_one_of as excluded,
+} from '@vee-validate/rules';
 
 export default {
-   install(app){
-		 app.component("VeeForm", VeeForm)
-		 app.component("VeeField", VeeField)
-     
-	 },
-} // app参数是对vue的引用，options参数是从vue传递到插件的附加数据
+  install(app) {
+    app.component('VeeForm', VeeForm);
+    app.component('VeeField', VeeField);
+    app.component('ErrorMessage', ErrorMessage);
+
+    defineRule('required', required);
+    defineRule('min', min);
+    defineRule('max', max);
+    defineRule('alpha_spaces', alphaSpaces);
+    defineRule('email', email);
+    defineRule('min_value', minVal);
+    defineRule('max_value', maxVal);
+    defineRule('confirmed', confirmed);
+    defineRule('excluded', excluded);
+  },
+};
+// app参数是对vue的引用，options参数是从vue传递到插件的附加数据。
