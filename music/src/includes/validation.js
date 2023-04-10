@@ -1,26 +1,69 @@
 import {
-  Form as VeeForm, Field as VeeField, defineRule, ErrorMessage,
-} from 'vee-validate';
+  Form as VeeForm,
+  Field as VeeField,
+  defineRule,
+  ErrorMessage,
+  configure,
+} from "vee-validate";
 import {
-  required, min, max, alpha_spaces as alphaSpaces, email,
-  min_value as minVal, max_value as maxVal, confirmed, not_one_of as excluded,
-} from '@vee-validate/rules';
+  required,
+  min,
+  max,
+  alpha_spaces as alphaSpaces,
+  email,
+  min_value as minVal,
+  max_value as maxVal,
+  confirmed,
+  not_one_of as excluded,
+} from "@vee-validate/rules";
 
 export default {
   install(app) {
-    app.component('VeeForm', VeeForm);
-    app.component('VeeField', VeeField);
-    app.component('ErrorMessage', ErrorMessage);
+    app.component("VeeForm", VeeForm);
+    app.component("VeeField", VeeField);
+    app.component("ErrorMessage", ErrorMessage);
 
-    defineRule('required', required);
-    defineRule('min', min);
-    defineRule('max', max);
-    defineRule('alpha_spaces', alphaSpaces);
-    defineRule('email', email);
-    defineRule('min_value', minVal);
-    defineRule('max_value', maxVal);
-    defineRule('confirmed', confirmed);
-    defineRule('excluded', excluded);
+    defineRule("required", required);
+    defineRule("tos", required);
+    defineRule("min", min);
+    defineRule("max", max);
+    defineRule("alpha_spaces", alphaSpaces);
+    defineRule("email", email);
+    defineRule("min_value", minVal);
+    defineRule("max_value", maxVal);
+    defineRule("passwords_mismatch", confirmed);
+    defineRule("excluded", excluded);
+    defineRule("country_excluded", excluded);
+
+    configure({
+      generateMessage: (ctx) => {
+        const messages = {
+          required: `The field ${ctx.field} is required.`,
+          min: `The field ${ctx.field} is too short.`,
+          max: `The field ${ctx.field} is too long.`,
+          alpha_spaces: `The field ${ctx.field} may only contain alphabetical characters and spaces.`,
+          email: `The field ${ctx.field} must be a valid email.`,
+          min_value: `The field ${ctx.field} is too low.`,
+          max_value: `The field ${ctx.field} is too high.`,
+          excluded: `You are not allowed to use this value for the field ${ctx.field}.`,
+          country_excluded:
+            "Due to restrictions, we do not accept users from this location.",
+          passwords_mismatch: "The passwords don't match.",
+          tos: "You must accept the Terms of Service.",
+        };
+
+        const message = messages[ctx.rule.name]
+          ? messages[ctx.rule.name]
+          : `The field ${ctx.field} is invalid.`;
+
+        return message;
+      }, // 我们将检查消息上下文点规则名称是否存在。
+      validateOnBlur: true, // 他们在blur选项上进行验证将告诉验证是否应该通过以下方式验证模糊事件上的字段
+      validateOnChange: true, // 他们验证未更改选项将告诉验证是否应该验证更改事件上的字段，
+      validateOnInput: false, // 输入更改，它与更改事件不同，因为它会在每次击键时触发,如果值无效，用户按下一个键，错误将立即出现。适用于密码
+      validateOnModelUpdate: true, // 
+    });
   },
 };
+
 // app参数是对vue的引用，options参数是从vue传递到插件的附加数据。
