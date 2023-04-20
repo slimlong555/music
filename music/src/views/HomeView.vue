@@ -66,7 +66,7 @@
 
           <div class="text-gray-600 text-lg">
             <span class="comments">
-              <i class="fa fa-comments text-gray-600"></i> <!-- 定义与文本中其余部分不同的部分，并把这部分文本呈现为斜体文本 -->
+              <i class="fa fa-comments text-gray-600"></i> <!-- 定义与文本中其余部分不同的部分，并把这部分文本呈现为斜体文本。 -->
               15
             </span>
           </div>
