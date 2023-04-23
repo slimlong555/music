@@ -1,6 +1,8 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import 'firebase/storage';
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyAsh394ExVaaGcUPDesxEtH6qW821281Hw",
@@ -15,8 +17,16 @@ firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
 const db = firebase.firestore();
+const storage = firebase.storage();
+
 // firestore函数将返回一个具有与数据库交互的方法和属性的对象,而不是重复调用它，而是将它存储在一个变量中。
 
 const usersCollection = db.collection("users");//此函数将返回一个对象，其中包含用于处理用户集合的方法和属性。
-
-export { auth, db, usersCollection};
+const songsCollection = db.collection('songs');
+export {
+  auth,
+  db,
+  usersCollection,
+  songsCollection,
+  storage,
+};
