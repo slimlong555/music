@@ -54,6 +54,7 @@ export default {
       uploads: [],
     };
   },
+  props: ['addSong'],
   methods: {
     upload ($event) {
       this.is_dragover = false;
@@ -64,7 +65,7 @@ export default {
       // 此属性已定义事件是拖放事件，如果它是不同的，它将不存在
       // 如果这个条件为真，将要将文件变量设置为事件，
       files.forEach((file) => {
-        if (file.type !== 'audio/mpeg') {
+        if (file.type !== 'audio/ogg') {
           return;
         } // 回调函数将在每次迭代中接收文件。一共有三个参数，分别是file,index,array。
         // 接下来，我们要在循环当前迭代中对单个文件执行验证，如果用户尝试上传音频文件以外的文件将拒绝该文件
@@ -103,10 +104,17 @@ export default {
             // 如果他们更新名称，那么我们将不得不向firebase发出两次请求，一次向数据库发出请求,另一个到存储重命名文件以将这些请求减半。
             // 我们可以让一个属性保存原始名称，另一个属性保存修改后的名称
             song.url = await task.snapshot.ref.getDownloadURL(); // 这个函数将返回一个promise，我们将使用async方法来处理
-            await songsCollection.add(song);
+            const songRef = await songsCollection.add(song);
+            const songSnapshot = await songRef.get();
+            // 添加歌曲功能需要Snapshot，而不是reference。可以用get获取
+            this.addSong(songSnapshot);
+            // 通过传递文件，引用将能够将其数据推送到这些歌曲的托管中
+
+
             // 有两个函数可以将文档添加到集合中,set和add,该功能是我们用来将用户添加到用户集合中的功能。
             // 两者之间的区别在于set函数将允许您将自定义id分配给文档
             // add函数将指示Firebase为您生成一个id
+
 
             this.uploads[uploadIndex].variant = 'bg-green-400';
             this.uploads[uploadIndex].icon = 'fas fa-check';

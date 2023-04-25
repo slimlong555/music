@@ -3,6 +3,7 @@ import Home from "@/views/HomeView.vue";
 import About from "@/views/AboutView.vue";
 import Manage from "@/views/Manage.vue";
 import useUserStore from "@/stores/user";
+import Song from "@/views/Song.vue";
 
 
 
@@ -34,6 +35,11 @@ const routes = [
   {
     path: "/manage",
     redirect: { name: "manage" },
+  },
+  {
+    name: 'song',
+    path: '/song/:id',
+    component: Song  // :可以告诉reporter该片段可以是动态的。
   },
   {
     path: "/:catchAll(.*)*", /* 正则表达式将匹配任何值。星号用于兑现记录中不存在的路径。如果找不到匹配项，View路由器将确保检查其他记录是否匹配。 */
