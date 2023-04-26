@@ -23,10 +23,12 @@ const storage = firebase.storage();
 
 const usersCollection = db.collection("users");//此函数将返回一个对象，其中包含用于处理用户集合的方法和属性。
 const songsCollection = db.collection('songs');
+const commentCollection = db.collection('comments');
 export {
   auth,
   db,
   usersCollection,
   songsCollection,
+  commentCollection,
   storage,
 };

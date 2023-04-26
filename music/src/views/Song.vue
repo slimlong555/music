@@ -13,7 +13,7 @@
         </button>
         <div class="z-50 text-left ml-8">
           <!-- Song Info -->
-          <div class="text-3xl font-bold">{{ song.modified_name }}</div>
+          <div class="text-3xl font-bold">{{ song.modified_name }}</div> <!-- 修改后的名称是在用户想要更新名称的情况下得到更新的属性 -->
           <div>{{ song.genre }}</div>
         </div>
       </div>
@@ -35,11 +35,11 @@
           </div>
           <vee-form :validation-schema="schema"
                     @submit="addComment"
-                    v-if="userLoggedIn">
+                    v-if="userLoggedIn"><!-- 表单检验 --> <!-- @submit="addComment"监听提交事件 -->
             <vee-field as="textarea"
                        name="comment"
                        class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded mb-4"
-                       placeholder="Your comment here..."></vee-field>
+                       placeholder="Your comment here..."></vee-field> <!-- 这将验证输入，字段组件将与任何HTML表单输入元素一起使用 -->，
             <ErrorMessage class="text-red-600"
                           name="comment" />
             <button type="submit"
@@ -68,7 +68,7 @@
           <time>{{ comment.datePosted }}</time>
         </div>
 
-        <p>{{ comment.content }}</p>
+        <p>{{ comment.content }}</p> <!-- 我们使用我们赋予它们属性的名称来访问数据库中的正确值。 -->
       </li>
     </ul>
   </main>
@@ -86,7 +86,7 @@ export default {
     return {
       song: {},
       schema: {
-        comment: "required|min:3",
+        comment: "required|min:3", // 验证评论最少三个
       },
       comment_in_submission: false,
       comment_show_alert: false,
@@ -97,16 +97,16 @@ export default {
     };
   },
   computed: {
-    ...mapState(useUserStore, ["userLoggedIn"]),
+    ...mapState(useUserStore, ["userLoggedIn"]),// 在计算对象内部，使用扩展运算符调用映射状态函数。
     sortedComments () {
       return this.comments.slice().sort((a, b) => {
         if (this.sort === "1") {
           return new Date(b.datePosted) - new Date(a.datePosted);
         }
-
+        // 在进行适当的比较之前，必须将日期转换为字符串进行存储。
         return new Date(a.datePosted) - new Date(b.datePosted);
       });
-    },
+    }, // 计算机属性将返回，评论是排序的，我们可以对数组进行排序
   },
   async created () {
     const docSnapshot = await songsCollection.doc(this.$route.params.id).get();
@@ -135,9 +135,9 @@ export default {
       const comment = {
         content: values.comment,
         datePosted: new Date().toString(),
-        sid: this.$route.params.id,
+        sid: this.$route.params.id,  /* 歌曲的名字 */
         name: auth.currentUser.displayName,
-        uid: auth.currentUser.uid,
+        uid: auth.currentUser.uid,  /* 我们存储用户的id作为额外的预防措施。 */
       };
 
       await commentsCollection.add(comment);
