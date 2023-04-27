@@ -14,7 +14,7 @@ export default defineStore("player", {
     async newSong(song) {
       if (this.sound instanceof Howl) {
         this.sound.unload();
-      }
+      } // unload函数将暂停当前音频。它还将删除实例并将其从内存中删除。防止重复播放
 
       this.current_song = song;
 
@@ -60,17 +60,18 @@ export default defineStore("player", {
     updateSeek(event) {
       if (!this.sound.playing) {
         return;
-      }
+      } // Howler这个名字用来描述音频的当前位置。
 
-      const { x, width } = event.currentTarget.getBoundingClientRect();
+      const { x, width } = event.currentTarget.getBoundingClientRect(); // JavaScript中，事件可以从具有事件的父元素的子元素发出
       // Document = 2000, Timeline = 1000, clientX = 1000, Distance = 500
+      // 我们在播放器中的时间轴不会占据页面的整个宽度。如果用户在时间轴中间点击，clientx属性将不代表坐标
       const clickX = event.clientX - x;
       const percentage = clickX / width;
       const seconds = this.sound.duration() * percentage;
 
       this.sound.seek(seconds);
       this.sound.once("seek", this.progress);
-    },
+    }, //提供一个视觉提示，让用户知道他们的音频已被移动。
   },
   getters: {
     playing: (state) => {

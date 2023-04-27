@@ -19,7 +19,7 @@
           <i class="fa fa-comments text-gray-600"></i>
           {{ song.comment_count }}
         </span>
-      </router-link>
+      </router-link> <!-- custom属性将告诉路由器让我们完全控制组件的行为 -->
     </div>
   </li>
 </template>
