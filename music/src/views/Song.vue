@@ -13,8 +13,9 @@
         </button>
         <div class="z-50 text-left ml-8">
           <!-- Song Info -->
-          <div class="text-3xl font-bold">{{ song.modified_name }}</div> <!-- 修改后的名称是在用户想要更新名称的情况下得到更新的属性 -->
+          <div class="text-3xl font-bold">{{ song.modified_name }}</div>
           <div>{{ song.genre }}</div>
+          <div class="song-price">{{ $n(1, "currency", "zh") }}</div>
         </div>
       </div>
     </section>
@@ -24,8 +25,8 @@
       <div class="bg-white rounded border border-gray-200 relative flex flex-col">
         <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
           <!-- Comment Count -->
-          <span class="card-title">Comments ({{ song.comment_count }})</span>
-          <i class="fa fa-comments float-right text-green-400 text-2xl"></i>
+          <span class="card-title">{{ $tc("song.comment_count", song.comment_count,{ count: song.comment_count}) }}</span>
+          <i class="fa fa-comments float-right text-green-400 text-2xl"></i> <!-- 第二个参数将用于确定要使用的路径中的哪条消息将传入歌曲和计数。最后一个参数是占位符的值。 -->
         </div>
         <div class="p-6">
           <div class="text-white text-center font-bold p-4 mb-4"
@@ -39,7 +40,7 @@
             <vee-field as="textarea"
                        name="comment"
                        class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded mb-4"
-                       placeholder="Your comment here..."></vee-field> <!-- 这将验证输入，字段组件将与任何HTML表单输入元素一起使用 -->，
+                       placeholder="Your comment here..."></vee-field> <!-- 这将验证输入，字段组件将与任何HTML表单输入元素一起使用 -->
             <ErrorMessage class="text-red-600"
                           name="comment" />
             <button type="submit"

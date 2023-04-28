@@ -5,9 +5,15 @@ import App from './App.vue'
 import router from './router'
 import VeeValidatePlugin from "./includes/validation";
 import { auth } from "./includes/firebase";
+import Icon from "./directives/icon";
+import i18n from "./includes/i18n";
+import { registerSW } from "virtual:pwa-register";
+
 
 import './assets/base.css';
 import './assets/main.css';
+
+registerSW({ immediate: true });
  
 let app;
 auth.onAuthStateChanged(() => {
@@ -16,6 +22,9 @@ auth.onAuthStateChanged(() => {
     app.use(createPinia());
     app.use(router);
     app.use(VeeValidatePlugin , {foo:100});// 开发人员使用它来允许其他开发人员配置插件的功能。
+    app.directive("icon",Icon);
+    app.use(i18n);
+
 
     app.mount("#app");
   }

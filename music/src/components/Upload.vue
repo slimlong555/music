@@ -68,7 +68,19 @@ export default {
         if (file.type !== 'audio/ogg') {
           return;
         } // 回调函数将在每次迭代中接收文件。一共有三个参数，分别是file,index,array。
-        // 接下来，我们要在循环当前迭代中对单个文件执行验证，如果用户尝试上传音频文件以外的文件将拒绝该文件
+        // 接下来，我们要在循环当前迭代中对单个文件执行验证，如果用户尝试上传音频文件以外的文件将拒绝该文件.
+        if (!navigator.onLine) {
+          this.uploads.push({
+            task: {},
+            current_progress: "100",
+            name: file.name,
+            variant: "bg-red-400",
+            icon: "fas fa-times",
+            text_class: "text-red-400",
+          });
+          return;
+        } // 处理离线时上传
+
         const storageRef = storage.ref(); // 我们正在创建对存储的引用，该引用代表我们存储中的路径，也就是music-c9b05.appspot.com
         const songsRef = storageRef.child(`songs/${file.name}`); // child方法会创建另一个引用，child和reference的主要区别是子函数将创建一个相对于父引用的路径。
         //而这个例子，父引用是存储引用。与上次不同的是，我们正在专门为用户上传的音频文件创建一个单独的参考。此路径将导致指向我们的Bucket的引用，并附有路径。也就是music-c9b05.appspot.com/songs.example.mp3
