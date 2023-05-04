@@ -109,21 +109,24 @@ export default {
       });
     }, // 计算机属性将返回，评论是排序的，我们可以对数组进行排序
   },
-  async created () {
-    const docSnapshot = await songsCollection.doc(this.$route.params.id).get();
+  async beforeRouteEnter (to, from, next) {
+    const docSnapshot = await songsCollection.doc(to.params.id).get();
+    // to object保存与当前正在访问的路由相关的属性，这个对象包括路由参数将能够为函数提供其之后所需的信息。
+    next((vm) => {
+      if (!docSnapshot.exists) {
+        vm.$router.push({ name: "home" });
+        return;
+      }
 
-    if (!docSnapshot.exists) {
-      this.$router.push({ name: "home" });
-      return;
-    }
+      const { sort } = vm.$route.query;
 
-    const { sort } = this.$route.query;
+      vm.sort = sort === "1" || sort === "2" ? sort : "1";
 
-    this.sort = sort === "1" || sort === "2" ? sort : "1";
-
-    this.song = docSnapshot.data();
-    this.getComments();
-  },
+      vm.song = docSnapshot.data();
+      vm.getComments();
+    });
+  }, // beforeRouteEnter将在组件加载到页面之前运行
+  //这个和创建的生命周期钩子的区别是我们可以明确地告诉你什么时候移动进入下一步。
   methods: {
     ...mapActions(usePlayerStore, ["newSong"]),
     async addComment (values, { resetForm }) {
